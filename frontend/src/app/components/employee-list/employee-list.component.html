@@ -1,0 +1,63 @@
+<div class="container">
+  <div class="header">
+    <h1>Employee Management</h1>
+    <div class="actions">
+      <button class="btn btn-primary" (click)="navigateToCreate()">Create Employee</button>
+      <button class="btn btn-danger" (click)="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="search-section">
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="search()"
+        placeholder="Search by name..."
+      />
+      <button class="btn btn-secondary" (click)="search()">Search</button>
+      <button class="btn btn-secondary" (click)="loadEmployees()" *ngIf="searchTerm">Clear</button>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <div class="loading" *ngIf="loading">Loading...</div>
+
+  <table *ngIf="!loading && employees.length > 0" class="employee-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Paternal Last Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Job Title</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employee of employees">
+        <td>{{ employee.id }}</td>
+        <td>{{ employee.firstName }}</td>
+        <td>{{ employee.paternalLastName }}</td>
+        <td>{{ employee.age }}</td>
+        <td>{{ employee.gender }}</td>
+        <td>{{ employee.jobTitle }}</td>
+        <td>
+          <span class="status" [class.active]="employee.active" [class.inactive]="!employee.active">
+            {{ employee.active ? 'Active' : 'Inactive' }}
+          </span>
+        </td>
+        <td class="actions">
+          <button class="btn btn-sm btn-primary" (click)="editEmployee(employee.id)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteEmployee(employee.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && employees.length === 0" class="no-data">No employees found</div>
+</div>
+

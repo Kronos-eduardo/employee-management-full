@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: employee-api-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - app-network
+    depends_on:
+      - frontend
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: employee-api-frontend
+    ports:
+      - "4200:4200"
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=4200
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
